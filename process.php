@@ -81,21 +81,16 @@ if (isset($_POST['checkout']) && !empty($_POST['items'])) {
             }
 
             @media print {
-                body { 
-                    background: #ffffff !important; 
-                    padding: 0 !important; 
-                    margin: 0 !important;
-                }
-                
+                body { background: #ffffff !important; padding: 0 !important; }
                 .receipt-card { 
                     border: none !important; 
                     box-shadow: none !important; 
-                    max-w: 100% !important; 
                     width: 100% !important; 
-                    padding: 6mm !important; 
-                    margin: 0 auto !important;
-                    background-image: none !important;
+                    max-width: 80mm !important;
+                    padding: 2mm !important; 
+                    margin: 0 !important;
                 }
+                .print-hidden { display: none !important; }
             }
         </style>
     </head>

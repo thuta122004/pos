@@ -24,7 +24,14 @@ $items = $items_stmt->get_result();
         @page { margin: 0; }
         @media print {
             body { background: #ffffff !important; padding: 0 !important; }
-            .receipt-card { border: none !important; box-shadow: none !important; width: 100% !important; padding: 6mm !important; background-image: none !important; }
+            .receipt-card { 
+                border: none !important; 
+                box-shadow: none !important; 
+                width: 100% !important; 
+                max-width: 80mm !important;
+                padding: 2mm !important; 
+                margin: 0 !important;
+            }
             .print-hidden { display: none !important; }
         }
     </style>
