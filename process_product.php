@@ -4,7 +4,7 @@ require_once 'dbconnect.php';
 $target_dir = "uploads/";
 
 if (isset($_POST['add'])) {
-    $image_db_value = "default_icepop.png";
+    $image_db_value = "default.png";
 
     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
         $image_name = time() . '_' . basename($_FILES["image"]["name"]);
@@ -40,7 +40,7 @@ if (isset($_POST['update'])) {
             $query->execute();
             $result = $query->get_result()->fetch_assoc();
             
-            if ($result && !empty($result['image_path']) && $result['image_path'] !== 'default_icepop.png') {
+            if ($result && !empty($result['image_path']) && $result['image_path'] !== 'default.png') {
                 $old_file = $target_dir . $result['image_path'];
                 if (file_exists($old_file)) {
                     unlink($old_file);

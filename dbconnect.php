@@ -2,7 +2,7 @@
 $host = 'localhost';
 $user = 'root';
 $pass = '';
-$db   = 'ice_pop_pos';
+$db   = 'pos';
 
 $conn = new mysqli($host, $user, $pass, $db);
 

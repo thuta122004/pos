@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Ice Pop POS | Order</title>
+    <title>POS | Order</title>
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased p-6 md:p-12 relative overflow-x-hidden">
     
@@ -17,8 +17,8 @@
                 </svg>
             </div>
             <div>
-                <h4 class="text-xs font-bold text-slate-800">Stock Limit Reached</h4>
-                <p id="toastMessage" class="text-[11px] text-slate-400 font-medium mt-0.5">Maximum available units reached.</p>
+                <h4 class="text-xs font-bold text-slate-800">Inventory Limit</h4>
+                <p id="toastMessage" class="text-[11px] text-slate-400 font-medium mt-0.5"></p>
             </div>
         </div>
     </div>
@@ -27,15 +27,15 @@
         
         <header class="flex justify-between items-center mb-10 pb-6 border-b border-slate-200/60">
             <div>
-                <h1 class="text-3xl font-extrabold text-pink-500 tracking-tight">Ice Pop Menu</h1>
-                <p class="text-slate-400 text-sm mt-1 font-medium">Select delicious flavors</p>
+                <h1 class="text-3xl font-extrabold text-pink-500 tracking-tight">Product Catalog</h1>
+                <p class="text-slate-400 text-sm mt-1 font-medium">Select items to add to your order</p>
             </div>
             <div>
                 <a href="products.php" class="inline-flex items-center gap-2 bg-slate-100 hover:bg-pink-50 text-slate-600 hover:text-pink-600 font-bold px-4 py-2.5 rounded-xl text-xs transition-all tracking-wide border border-slate-200/40 hover:border-pink-200/60 shadow-sm">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
                     </svg>
-                    Manage Stock
+                    Inventory Management
                 </a>
             </div>
         </header>
@@ -70,7 +70,7 @@
 
                             <div class="mt-5 pt-3 border-t border-slate-100 flex items-center justify-between">
                                 <span class="text-xs text-slate-400">
-                                    Stock: <span class="font-bold text-slate-600 font-mono"><?= $row['stock_quantity'] ?></span>
+                                    Available: <span class="font-bold text-slate-600 font-mono"><?= $row['stock_quantity'] ?></span>
                                 </span>
                                 <button type="button" 
                                         onclick="addToCart(<?= $row['product_id'] ?>, '<?= htmlspecialchars($row['name']) ?>', <?= $row['price'] ?>, <?= $row['stock_quantity'] ?>)"
@@ -89,15 +89,15 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5h6.75" />
                                 </svg>
                             </div>
-                            <h3 class="text-slate-800 font-bold text-sm">No Products Available</h3>
-                            <p class="text-slate-400 text-xs mt-1 max-w-xs">There are currently no items in stock to display. Please add products in the management section.</p>
+                            <h3 class="text-slate-800 font-bold text-sm">No Inventory Items Found</h3>
+                            <p class="text-slate-400 text-xs mt-1 max-w-xs">There are no products currently available. Please manage your inventory to add new items.</p>
                         </div>
                     <?php endif; ?>
                 </div>
             </div>
 
             <div class="bg-white rounded-2xl border border-slate-200/60 p-6 h-fit sticky top-6">
-                <h2 class="text-lg font-bold text-slate-800 mb-4 pb-3 border-b border-slate-100">Current Order</h2>
+                <h2 class="text-lg font-bold text-slate-800 mb-4 pb-3 border-b border-slate-100">Checkout Summary</h2>
                 
                 <form action="process.php" method="POST">
                     <div class="mb-4">
@@ -105,7 +105,7 @@
                             class="w-full bg-slate-50 border border-slate-200/60 text-slate-800 text-xs font-medium px-3 py-2.5 rounded-xl focus:outline-none focus:border-pink-400 focus:ring-1 focus:ring-pink-400 transition placeholder:text-slate-400">
                     </div>
                     <div id="cart-items" class="space-y-3 max-h-80 overflow-y-auto mb-6 pr-1 divide-y divide-slate-100">
-                        <p id="empty-cart-msg" class="text-xs text-slate-400 text-center py-10 font-medium">Your cart is currently empty.</p>
+                        <p id="empty-cart-msg" class="text-xs text-slate-400 text-center py-10 font-medium">No items added to cart.</p>
                     </div>
 
                     <div class="border-t border-slate-100 pt-4 space-y-2.5">
@@ -121,7 +121,7 @@
 
                     <button type="submit" name="checkout" id="checkout-btn" disabled
                             class="mt-6 w-full bg-slate-800 text-white font-bold py-3 rounded-xl hover:bg-slate-900 transition disabled:bg-slate-100 disabled:text-slate-300 disabled:cursor-not-allowed text-sm tracking-wide shadow-sm">
-                        Place Order & Print Receipt
+                        Confirm Order
                     </button>
                 </form>
             </div>
@@ -154,7 +154,7 @@
                 if (cart[id].quantity < maxStock) {
                     cart[id].quantity++;
                 } else {
-                    showCustomToast(`Only ${maxStock} items available in total.`);
+                    showCustomToast(`Maximum stock of ${maxStock} reached.`);
                     return;
                 }
             } else {
@@ -196,7 +196,7 @@
             const keys = Object.keys(cart);
             
             if (keys.length === 0) {
-                container.innerHTML = `<p id="empty-cart-msg" class="text-xs text-slate-400 text-center py-10 font-medium">Your cart is currently empty.</p>`;
+                container.innerHTML = `<p id="empty-cart-msg" class="text-xs text-slate-400 text-center py-10 font-medium">No items added to cart.</p>`;
                 
                 document.getElementById('summary-qty').innerText = "0 items";
                 document.getElementById('summary-total').innerText = "0";

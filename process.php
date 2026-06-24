@@ -74,7 +74,7 @@ if (isset($_POST['checkout']) && !empty($_POST['items'])) {
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="https://cdn.tailwindcss.com"></script>
-        <title>Order Receipt #<?= str_pad($transaction_id, 6, "0", STR_PAD_LEFT) ?></title>
+        <title>Receipt #<?= str_pad($transaction_id, 6, "0", STR_PAD_LEFT) ?></title>
         <style>
             @page {
                 margin: 0;
@@ -104,14 +104,11 @@ if (isset($_POST['checkout']) && !empty($_POST['items'])) {
         <div class="receipt-card bg-white p-6 rounded-2xl shadow-sm border border-slate-200/60 w-full max-w-sm bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:16px_16px]">
             <div class="text-center border-b border-dashed pb-4 mb-4">
                 <div class="flex justify-center text-pink-500 mb-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-8 h-8">
-                        <circle cx="12" cy="9" r="6" stroke-linecap="round" stroke-linejoin="round" />
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9a3 3 0 1 1-3-3" />
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v5.5" />
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                     </svg>
                 </div>
-                <h2 class="text-xl font-bold uppercase tracking-wider text-slate-800 mt-1">Ice Pop POS</h2>
-                <p class="text-xs text-slate-400 mt-0.5">Thank you for your purchase!</p>
+                <h2 class="text-xl font-bold uppercase tracking-wider text-slate-800 mt-1">Sales Receipt</h2> <p class="text-xs text-slate-400 mt-0.5">Thank you for your purchase!</p>
             </div>
             
             <div class="text-xs text-slate-500 space-y-1 mb-4 font-mono">
@@ -125,17 +122,18 @@ if (isset($_POST['checkout']) && !empty($_POST['items'])) {
             <table class="w-full text-sm font-mono border-b border-dashed pb-4 mb-4">
                 <thead class="text-xs text-slate-400 uppercase tracking-tight border-b border-slate-100">
                     <tr>
-                        <th class="text-left pb-2 font-normal w-1/2">Item Description</th>
-                        <th class="text-center pb-2 font-normal w-1/6">Qty</th>
-                        <th class="text-right pb-2 font-normal w-1/3">Amount</th>
+                        <th class="text-left pb-2 font-normal">Item</th>
+                        <th class="text-center pb-2 font-normal">Qty</th>
+                        <th class="text-center pb-2 font-normal">Price</th> <th class="text-right pb-2 font-normal">Total</th>
                     </tr>
                 </thead>
+
                 <tbody class="text-slate-700">
                     <?php foreach ($items_to_save as $item): ?>
                     <tr>
-                        <td class="py-1.5 truncate max-w-[140px]"><?= htmlspecialchars($item['name']) ?></td>
-                        <td class="py-1.5 text-center">x<?= $item['quantity'] ?></td>
-                        <td class="py-1.5 text-right"><?= number_format($item['line_total']) ?></td>
+                        <td class="py-1.5 truncate max-w-[100px]"><?= htmlspecialchars($item['name']) ?></td>
+                        <td class="py-1.5 text-center"><?= $item['quantity'] ?></td>
+                        <td class="py-1.5 text-center"><?= number_format($item['price']) ?></td> <td class="py-1.5 text-right"><?= number_format($item['line_total']) ?></td>
                     </tr>
                     <?php endforeach; ?>
                 </tbody>

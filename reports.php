@@ -13,10 +13,10 @@ $order_stmt->execute();
 $orders_res = $order_stmt->get_result()->fetch_assoc();
 $total_orders = $orders_res['total'] ?? 0;
 
-$pop_stmt = $conn->prepare("SELECT SUM(quantity) as total FROM transaction_items");
-$pop_stmt->execute();
-$pop_res = $pop_stmt->get_result()->fetch_assoc();
-$total_pops_sold = $pop_res['total'] ?? 0;
+$item_stmt = $conn->prepare("SELECT SUM(quantity) as total FROM transaction_items");
+$item_stmt->execute();
+$item_res = $item_stmt->get_result()->fetch_assoc();
+$total_items_sold = $item_res['total'] ?? 0;
 
 
 $trend_stmt = $conn->prepare("SELECT DATE(transaction_date) as sales_date, SUM(total_amount) as day_total 
@@ -41,11 +41,11 @@ $product_stmt = $conn->prepare("SELECT p.name, SUM(ti.quantity) as total_qty
 $product_stmt->execute();
 $product_result = $product_stmt->get_result();
 
-$flavor_labels = [];
-$flavor_data = [];
+$product_labels = [];
+$product_data = [];
 while ($row = $product_result->fetch_assoc()) {
-    $flavor_labels[] = $row['name'];
-    $flavor_data[] = (int)$row['total_qty'];
+    $product_labels[] = $row['name'];
+    $product_data[] = (int)$row['total_qty'];
 }
 ?>
 <!DOCTYPE html>
@@ -55,7 +55,7 @@ while ($row = $product_result->fetch_assoc()) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <title>Ice Pop POS | Performance Reports</title>
+    <title>POS | Performance Reports</title>
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased p-6 md:p-12">
 
@@ -64,7 +64,7 @@ while ($row = $product_result->fetch_assoc()) {
         <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-10 pb-6 border-b border-slate-200/60">
             <div>
                 <h1 class="text-3xl font-extrabold text-pink-500 tracking-tight">Business Reports</h1>
-                <p class="text-slate-400 text-sm mt-1 font-medium">Analyze total lifetime sales performance and flavor trends</p>
+                <p class="text-slate-400 text-sm mt-1 font-medium">Analyze total lifetime sales performance and trends</p>
             </div>
             <div class="flex gap-2">
                 <a href="products.php" class="inline-flex items-center gap-2 bg-slate-100 hover:bg-pink-50 text-slate-600 hover:text-pink-600 font-bold px-4 py-2.5 rounded-xl text-xs transition-all tracking-wide border border-slate-200/40 hover:border-pink-200/60 shadow-sm">
@@ -106,13 +106,12 @@ while ($row = $product_result->fetch_assoc()) {
 
             <div class="bg-white rounded-2xl border border-slate-200/60 p-6 shadow-sm flex items-center justify-between">
                 <div>
-                    <p class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Ice Pops Sold</p>
-                    <h3 class="text-2xl font-black text-slate-800 font-mono mt-1"><?= number_format($total_pops_sold) ?> <span class="text-xs font-sans font-bold text-slate-400">units</span></h3>
+                    <p class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Total Items Sold</p>
+                    <h3 class="text-2xl font-black text-slate-800 font-mono mt-1"><?= number_format($total_items_sold) ?> <span class="text-xs font-sans font-bold text-slate-400">units</span></h3>
                 </div>
                 <div class="w-10 h-10 rounded-xl bg-pink-50 text-pink-500 flex items-center justify-center shrink-0">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-5 h-5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-3m0-13.5A4.5 4.5 0 0 0 7.5 9v6a3 3 0 0 0 3 3h3a3 3 0 0 0 3-3V9A4.5 4.5 0 0 0 12 4.5Z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 9.75v3.5M13.5 9.75v3.5" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" />
                     </svg>
                 </div>
             </div>
@@ -132,12 +131,12 @@ while ($row = $product_result->fetch_assoc()) {
             </div>
 
             <div class="bg-white rounded-2xl border border-slate-200/60 p-6 shadow-sm">
-                <h3 class="text-sm font-bold text-slate-800 mb-6 uppercase tracking-wider text-slate-400">All-Time Top 5 Flavors</h3>
+                <h3 class="text-sm font-bold text-slate-800 mb-6 uppercase tracking-wider text-slate-400">All-Time Top 5 products</h3>
                 <div class="relative h-72 w-full">
-                    <?php if(empty($flavor_labels)): ?>
+                    <?php if(empty($product_labels)): ?>
                         <div class="absolute inset-0 flex items-center justify-center text-xs font-medium text-slate-400 bg-slate-50/50 rounded-xl border border-dashed">No product metrics recorded yet.</div>
                     <?php endif; ?>
-                    <canvas id="flavorShareChart"></canvas>
+                    <canvas id="productShareChart"></canvas>
                 </div>
             </div>
 
@@ -149,8 +148,8 @@ while ($row = $product_result->fetch_assoc()) {
         const timelineLabels = <?= json_encode($timeline_labels) ?>;
         const timelineData = <?= json_encode($timeline_data) ?>;
         
-        const flavorLabels = <?= json_encode($flavor_labels) ?>;
-        const flavorData = <?= json_encode($flavor_data) ?>;
+        const productLabels = <?= json_encode($product_labels) ?>;
+        const productData = <?= json_encode($product_data) ?>;
 
         if (timelineLabels.length > 0) {
             const ctxTimeline = document.getElementById('revenueTimelineChart').getContext('2d');
@@ -182,14 +181,14 @@ while ($row = $product_result->fetch_assoc()) {
             });
         }
 
-        if (flavorLabels.length > 0) {
-            const ctxFlavors = document.getElementById('flavorShareChart').getContext('2d');
-            new Chart(ctxFlavors, {
+        if (productLabels.length > 0) {
+            const ctxproducts = document.getElementById('productShareChart').getContext('2d');
+            new Chart(ctxproducts, {
                 type: 'bar',
                 data: {
-                    labels: flavorLabels,
+                    labels: productLabels,
                     datasets: [{
-                        data: flavorData,
+                        data: productData,
                         backgroundColor: '#1e293b',
                         borderRadius: 8,
                         borderSkipped: false,

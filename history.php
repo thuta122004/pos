@@ -25,7 +25,7 @@ $result = $conn->query($query);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Ice Pop POS | History</title>
+    <title>POS | History</title>
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased p-6 md:p-12">
     

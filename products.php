@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Ice Pop POS | Manage Stock</title>
+    <title>POS | Inventory Management</title>
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased p-6 md:p-12 relative overflow-x-hidden">
     
@@ -17,6 +17,12 @@
                 <p class="text-slate-400 text-sm mt-1 font-medium">Configure products and stock levels</p>
             </div>
             <div class="flex items-center gap-2">
+                <a href="index.php" class="inline-flex items-center gap-2 bg-slate-100 hover:bg-pink-50 text-slate-600 hover:text-pink-600 font-bold px-4 py-2.5 rounded-xl text-xs transition-all tracking-wide border border-slate-200/40 hover:border-pink-200/60 shadow-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                    </svg>
+                    Back to Product Catalog
+                </a>
                 <a href="history.php" class="inline-flex items-center gap-2 bg-slate-100 hover:bg-pink-50 text-slate-600 hover:text-pink-600 font-bold px-4 py-2.5 rounded-xl text-xs transition-all tracking-wide border border-slate-200/40 hover:border-pink-200/60 shadow-sm">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -28,12 +34,6 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v5.25c0 .621-.504 1.125-1.125 1.125h-2.25A1.125 1.125 0 0 1 3 18.375v-5.25ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125v-9.75ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v14.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" />
                     </svg>
                     View Reports
-                </a>
-                <a href="index.php" class="inline-flex items-center gap-2 bg-slate-100 hover:bg-pink-50 text-slate-600 hover:text-pink-600 font-bold px-4 py-2.5 rounded-xl text-xs transition-all tracking-wide border border-slate-200/40 hover:border-pink-200/60 shadow-sm">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
-                    </svg>
-                    Back to Orders
                 </a>
             </div>
         </header>
@@ -103,7 +103,7 @@
                         ?>
                             <tr>
                                 <td colspan="5" class="p-10 text-center text-slate-400 text-xs font-medium italic">
-                                    No active flavor records found. Add a new Ice Pop using the form on the right.
+                                    No active products found. Add a new item using the form on the right.
                                 </td>
                             </tr>
                         <?php endif; ?>
@@ -112,12 +112,12 @@
             </div>
 
             <div class="bg-white rounded-2xl border border-slate-200/60 p-6 h-fit sticky top-6 shadow-sm">
-                <h2 class="text-lg font-bold text-slate-800 mb-4 pb-3 border-b border-slate-100">Add New Ice Pop</h2>
+                <h2 class="text-lg font-bold text-slate-800 mb-4 pb-3 border-b border-slate-100">Add Product</h2>
                 
                 <form action="process_product.php" method="POST" enctype="multipart/form-data" class="space-y-4">
                     <div>
                         <label class="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-1.5">Flavor Name</label>
-                        <input type="text" name="name" placeholder="Creamy Strawberry" class="w-full text-xs p-3 border border-slate-200/80 rounded-xl focus:outline-pink-500 bg-slate-50/50" required>
+                        <input type="text" name="name" placeholder="Candle" class="w-full text-xs p-3 border border-slate-200/80 rounded-xl focus:outline-pink-500 bg-slate-50/50" required>
                     </div>
 
                     <div class="grid grid-cols-2 gap-3">
@@ -137,7 +137,7 @@
                     </div>
 
                     <button type="submit" name="add" class="mt-2 w-full bg-pink-500 text-white font-bold py-3 rounded-xl hover:bg-pink-600 transition text-xs uppercase tracking-wider shadow-sm">
-                        Create Flavor Record
+                        Save
                     </button>
                 </form>
             </div>
@@ -147,8 +147,8 @@
 
     <div id="deleteModal" class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4 z-50 transition-all">
         <div class="bg-white rounded-2xl p-6 max-w-sm w-full border border-slate-100 shadow-xl">
-            <h3 class="text-base font-bold text-slate-800 mb-1.5 tracking-tight">Delete Product Flavor?</h3>
-            <p class="text-xs font-medium text-slate-400 mb-6 leading-relaxed">Are you absolutely sure? This removes the pop catalog record entirely from active retail inventory pipelines.</p>
+            <h3 class="text-base font-bold text-slate-800 mb-1.5 tracking-tight">Delete Product?</h3>
+            <p class="text-xs font-medium text-slate-400 mb-6 leading-relaxed">Are you absolutely sure? This removes the product catalog record entirely from active retail inventory pipelines.</p>
             <div class="flex gap-3 text-xs font-bold">
                 <button onclick="closeModal()" class="flex-1 px-4 py-2.5 bg-slate-100 text-slate-600 rounded-xl hover:bg-slate-200 transition">Cancel</button>
                 <a id="confirmBtn" href="#" class="flex-1 px-4 py-2.5 bg-red-500 text-white rounded-xl text-center hover:bg-red-600 shadow-sm transition">Yes, Delete</a>
